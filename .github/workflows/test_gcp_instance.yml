@@ -1,0 +1,24 @@
+name: test gcp instance
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  create_directory:
+    name: create a directory on instance
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: ssh login
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{secrets.USERNAME}}
+          key: ${{secrets.GOOGLE_CLOUD_SSH_KEY}}
+          script: |
+            sudo apt update
+            sudo apt upgrade -y
+            mkdir mangoes
